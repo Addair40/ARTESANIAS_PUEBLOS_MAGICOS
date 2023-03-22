@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- PAGE settings -->
-  <link rel="icon" href="https://templates.pingendo.com/assets/Pingendo_favicon.ico">
   <title>PUEBLOS MAGICOS DE HIDALGO</title>
   <link rel="shortcut icon" href="imagenes/pueblosmagicosicono.png" type="image/x-icon">
   <meta name="description">
@@ -13,10 +12,64 @@
   <!-- CSS dependencies -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="aquamarine.css" type="text/css">
-  <!-- Script: Make my navbar transparent when the document is scrolled to top -->
-  <script src="js/navbar-ontop.js"></script>
-  <!-- Script: Animated entrance -->
-  <script src="js/animate-in.js"></script>
+  <link rel="manifest" href="manifest.json"> 
+ 
+  <!-- Script: PWA -->
+  <script type="text/javascript" src="js/app.js"></script>
+  <script src="js/serviceworker.js"></script>
+  <script src="js/push.min.js"></script>
+  <script>
+    function push(){
+      Push.Permission.request();
+      Push.create('Hola mundo',{
+        body: 'Soy tu notificacion',
+        icon: "imagenes/icons/icon-72x72.png",
+        timeout: 1500000,
+        vibrate: [100, 100, 100],
+        onclick: function(){
+          window.location="https://www.google.com.mx/maps/preview";
+          console.log(this);
+        }
+      });
+}
+  </script>
+  <script>
+    var button = document.getElementById("button");
+    button.addEventListener('click', function(){
+      notify();
+    });   
+    
+
+function notify(){
+
+  var properties = {
+    body: 'Soy tu notificacion',
+    icon: "/imagenes/icons/icon-72x72.png",
+  }
+  if (!("Notificacion" in window)){
+    alert("Este es un notificacion Push");
+  }else if(Notification.permission ==="granted"){
+    var notification = new Notification('Notificacion', properties);
+  }else if(Notification.permission !=="denied"){
+    Notification.requestPermission(function(permission){
+      if(Notification.permission ==="granted"){
+        var notification = new Notification('Hola mundo', properties);
+      }
+    });
+  }
+}
+  </script>
+
+  <link rel="apple-touch-icon" href="./imagenes/icons/icon-72x72.jpg" />
+  <link rel="apple-touch-icon" href="./imagenes/icons/icon-96x96.jpg" />
+  <link rel="apple-touch-icon" href="./imagenes/icons/icon-128x128.jpg" />
+  <link rel="apple-touch-icon" href="./imagens/icons/icon-144x144.jpg" />
+  <link rel="apple-touch-icon" href="./imagenes/icons/icon-152x152.jpg" />
+  <link rel="apple-touch-icon" href="./imagenes/icons/icon-192x192.jpg" />
+  <link rel="apple-touch-icon" href="./imagenes/icons/icon-384x384.jpg" />
+  <link rel="apple-touch-icon" href="./imagenes/icons/icon-512x512.jpg" />
+  <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
+
 </head>
 
 </head>
@@ -57,7 +110,7 @@
                   <font size=6 face="Cambria Bold"><b>Disfruta de Hidalgo</b></font>
                   <p class="my-4"><b>Ven y disfruta de los 7 pueblos magicos de Hidalgo, su gastronomia,
                     artesania,festividades y tradiciones</b></p>
-                  <a href="Culturas.html" class="btn mb-3 p-2 btn-light"><b class="">Visita Hidalgo</b></a>
+                  <a onclick="notify();" class="btn mb-3 p-2 btn-light"><b id="button">Visita Hidalgo</b></a>
                 </div>
               </div>
             </div>
